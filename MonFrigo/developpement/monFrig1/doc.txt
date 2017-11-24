@@ -1,0 +1,2 @@
+1) probleme :  HTTP GET n'est pas supporté avec cette url
+   --> j'ai ajouté éla methode doGet et doPost dans la servlet : acceuil.java
