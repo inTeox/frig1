@@ -8,20 +8,24 @@
     </head>
     <body>
         <div>
-            <form method="post" action="afficherClient">
+            <form method="post" action="inscription">
                 <fieldset>
                     <legend>Informations client</legend>
     
-                    <label for="nomClient">Nom <span class="requis">*</span></label>
-                    <input type="text" id="nomClient" name="nomClient" value="" size="20" maxlength="20" />
+                    <label for="nomProprietaire">Nom <span class="requis">*</span></label>
+                    <input type="text" id="nomProprietaire" name="nomProprietaire" value="" size="20" maxlength="20" />
                     <br />
                     
-                    <label for="prenomClient">Prénom </label>
-                    <input type="text" id="prenomClient" name="prenomClient" value="" size="20" maxlength="20" />
+                    <label for="prenomProprietaire">Prénom </label>
+                    <input type="text" id="prenomProprietaire" name="prenomProprietaire" value="" size="20" maxlength="20" />
                     <br />
     
-                    <label for="adresseClient">Adresse de livraison <span class="requis">*</span></label>
-                    <input type="text" id="adresseClient" name="adresseClient" value="" size="20" maxlength="20" />
+                    <label for="adresse1Proprietaire">Adresse<span class="requis">*</span></label>
+                    <input type="text" id="adresse1Proprietaire" name="adresse1Proprietaire" value="" size="20" maxlength="20" />
+                    <br />
+                  
+                    <label for="adresse2Proprietaire">Adresse<span class="requis">*</span></label>
+                    <input type="text" id="adresse2Proprietaire" name="adresse2Proprietaire" value="" size="20" maxlength="20" />
                     <br />
     
                     <label for="telephoneClient">Numéro de téléphone <span class="requis">*</span></label>
