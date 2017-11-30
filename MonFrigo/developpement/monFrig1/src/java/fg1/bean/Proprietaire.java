@@ -1,12 +1,21 @@
-package com.beans;
+package fg1.bean;
 
-public class Client {
+public class Proprietaire {
     /* Propriétés du bean */
+    private Long id;
     private String nom;
     private String prenom;
     private String adresse;
     private String telephone;
     private String email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setNom( String nom ) {
         this.nom = nom;

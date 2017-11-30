@@ -1,7 +1,7 @@
-package com.sdzee.tp.dao;
+package dao;
 
-import static com.sdzee.tp.dao.DAOUtilitaire.fermeturesSilencieuses;
-import static com.sdzee.tp.dao.DAOUtilitaire.initialisationRequetePreparee;
+import static dao.DAOUtilitaire.fermeturesSilencieuses;
+import static dao.DAOUtilitaire.initialisationRequetePreparee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sdzee.tp.beans.Client;
+import fg1.bean.Proprietaire;
 
-public class ClientDaoImpl implements ClientDao {
+public class InscriptionDaoImpl implements InscriptionDao {
 
     private static final String SQL_SELECT        = "SELECT id, nom, prenom, adresse, telephone, email, image FROM Client ORDER BY id";
     private static final String SQL_SELECT_PAR_ID = "SELECT id, nom, prenom, adresse, telephone, email, image FROM Client WHERE id = ?";
@@ -21,19 +21,19 @@ public class ClientDaoImpl implements ClientDao {
 
     private DAOFactory          daoFactory;
 
-    ClientDaoImpl( DAOFactory daoFactory ) {
+    InscriptionDaoImpl( DAOFactory daoFactory ) {
         this.daoFactory = daoFactory;
     }
 
-    /* Implémentation de la méthode définie dans l'interface ClientDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface InscriptionDao */
     @Override
-    public Client trouver( long id ) throws DAOException {
+    public Proprietaire trouver( long id ) throws DAOException {
         return trouver( SQL_SELECT_PAR_ID, id );
     }
 
-    /* Implémentation de la méthode définie dans l'interface ClientDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface InscriptionDao */
     @Override
-    public void creer( Client client ) throws DAOException {
+    public void creer( Proprietaire proprietaire ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet valeursAutoGenerees = null;
@@ -41,18 +41,18 @@ public class ClientDaoImpl implements ClientDao {
         try {
             connexion = daoFactory.getConnection();
             preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true,
-                    client.getNom(), client.getPrenom(),
-                    client.getAdresse(), client.getTelephone(),
-                    client.getEmail(), client.getImage() );
+                    proprietaire.getNom(), proprietaire.getPrenom(),
+                    proprietaire.getAdresse(), proprietaire.getTelephone(),
+                    proprietaire.getEmail(), proprietaire.getImage() );
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
-                throw new DAOException( "Échec de la création du client, aucune ligne ajoutée dans la table." );
+                throw new DAOException( "ï¿½chec de la crï¿½ation du client, aucune ligne ajoutï¿½e dans la table." );
             }
             valeursAutoGenerees = preparedStatement.getGeneratedKeys();
             if ( valeursAutoGenerees.next() ) {
-                client.setId( valeursAutoGenerees.getLong( 1 ) );
+                proprietaire.setId( valeursAutoGenerees.getLong( 1 ) );
             } else {
-                throw new DAOException( "Échec de la création du client en base, aucun ID auto-généré retourné." );
+                throw new DAOException( "ï¿½chec de la crï¿½ation du client en base, aucun ID auto-gï¿½nï¿½rï¿½ retournï¿½." );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -61,20 +61,20 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
-    /* Implémentation de la méthode définie dans l'interface ClientDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface InscriptionDao */
     @Override
-    public List<Client> lister() throws DAOException {
+    public List<Proprietaire> lister() throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<Client> clients = new ArrayList<Client>();
+        List<Proprietaire> proprietaires = new ArrayList<Proprietaire>();
 
         try {
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement( SQL_SELECT );
             resultSet = preparedStatement.executeQuery();
             while ( resultSet.next() ) {
-                clients.add( map( resultSet ) );
+                proprietaires.add( map( resultSet ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -82,23 +82,23 @@ public class ClientDaoImpl implements ClientDao {
             fermeturesSilencieuses( resultSet, preparedStatement, connection );
         }
 
-        return clients;
+        return proprietaires;
     }
 
-    /* Implémentation de la méthode définie dans l'interface ClientDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface InscriptionDao */
     @Override
-    public void supprimer( Client client ) throws DAOException {
+    public void supprimer( Proprietaire proprietaire ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
 
         try {
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE_PAR_ID, true, client.getId() );
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE_PAR_ID, true, proprietaire.getId() );
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
-                throw new DAOException( "Échec de la suppression du client, aucune ligne supprimée de la table." );
+                throw new DAOException( "ï¿½chec de la suppression du client, aucune ligne supprimï¿½e de la table." );
             } else {
-                client.setId( null );
+                proprietaire.setId( null );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -108,28 +108,28 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     /*
-     * Méthode générique utilisée pour retourner un client depuis la base de
-     * données, correspondant à la requête SQL donnée prenant en paramètres les
-     * objets passés en argument.
+     * Mï¿½thode gï¿½nï¿½rique utilisï¿½e pour retourner un client depuis la base de
+     * donnï¿½es, correspondant ï¿½ la requï¿½te SQL donnï¿½e prenant en paramï¿½tres les
+     * objets passï¿½s en argument.
      */
-    private Client trouver( String sql, Object... objets ) throws DAOException {
+    private Proprietaire trouver( String sql, Object... objets ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        Client client = null;
+        Proprietaire proprietaire = null;
 
         try {
-            /* Récupération d'une connexion depuis la Factory */
+            /* Rï¿½cupï¿½ration d'une connexion depuis la Factory */
             connexion = daoFactory.getConnection();
             /*
-             * Préparation de la requête avec les objets passés en arguments
-             * (ici, uniquement un id) et exécution.
+             * Prï¿½paration de la requï¿½te avec les objets passï¿½s en arguments
+             * (ici, uniquement un id) et exï¿½cution.
              */
             preparedStatement = initialisationRequetePreparee( connexion, sql, false, objets );
             resultSet = preparedStatement.executeQuery();
-            /* Parcours de la ligne de données retournée dans le ResultSet */
+            /* Parcours de la ligne de donnï¿½es retournï¿½e dans le ResultSet */
             if ( resultSet.next() ) {
-                client = map( resultSet );
+                proprietaire = map( resultSet );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -137,24 +137,31 @@ public class ClientDaoImpl implements ClientDao {
             fermeturesSilencieuses( resultSet, preparedStatement, connexion );
         }
 
-        return client;
+        return proprietaire;
     }
 
     /*
-     * Simple méthode utilitaire permettant de faire la correspondance (le
+     * Simple mï¿½thode utilitaire permettant de faire la correspondance (le
      * mapping) entre une ligne issue de la table des clients (un ResultSet) et
      * un bean Client.
      */
-    private static Client map( ResultSet resultSet ) throws SQLException {
-        Client client = new Client();
-        client.setId( resultSet.getLong( "id" ) );
-        client.setNom( resultSet.getString( "nom" ) );
-        client.setPrenom( resultSet.getString( "prenom" ) );
-        client.setAdresse( resultSet.getString( "adresse" ) );
-        client.setTelephone( resultSet.getString( "telephone" ) );
-        client.setEmail( resultSet.getString( "email" ) );
-        client.setImage( resultSet.getString( "image" ) );
-        return client;
+    private Proprietaire map( ResultSet resultSet ) throws SQLException {
+        Proprietaire proprietaire = new Proprietaire();
+        proprietaire.setId( resultSet.getLong( "id" ) );
+        
+   //     InscriptionDao proprietaireDao = daoFactory.getInscriptionDao();
+   //     proprietaire.setClient( proprietaireDao.trouver( resultSet.getLong( "id_client" ) ) );
+        
+        // voir clientDaoImpl
+        proprietaire.setNom( resultSet.getString( "nom" ) );
+        proprietaire.setPrenom( resultSet.getString( "prenom" ) );
+        proprietaire.setAdresse( resultSet.getString( "adresse" ) );
+        proprietaire.setTelephone( resultSet.getString( "telephone" ) );
+        proprietaire.setEmail( resultSet.getString( "email" ) );
+        proprietaire.setImage( resultSet.getString( "image" ) );
+        return proprietaire;
     }
+
+    
 
 }

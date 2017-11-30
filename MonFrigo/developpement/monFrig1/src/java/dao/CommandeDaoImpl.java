@@ -28,13 +28,13 @@ public class CommandeDaoImpl implements CommandeDao {
         this.daoFactory = daoFactory;
     }
 
-    /* Implémentation de la méthode définie dans l'interface CommandeDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface CommandeDao */
     @Override
     public Commande trouver( long id ) throws DAOException {
         return trouver( SQL_SELECT_PAR_ID, id );
     }
 
-    /* Implémentation de la méthode définie dans l'interface CommandeDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface CommandeDao */
     @Override
     public void creer( Commande commande ) throws DAOException {
         Connection connexion = null;
@@ -50,13 +50,13 @@ public class CommandeDaoImpl implements CommandeDao {
                     commande.getModeLivraison(), commande.getStatutLivraison() );
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
-                throw new DAOException( "Échec de la création de la commande, aucune ligne ajoutée dans la table." );
+                throw new DAOException( "ï¿½chec de la crï¿½ation de la commande, aucune ligne ajoutï¿½e dans la table." );
             }
             valeursAutoGenerees = preparedStatement.getGeneratedKeys();
             if ( valeursAutoGenerees.next() ) {
                 commande.setId( valeursAutoGenerees.getLong( 1 ) );
             } else {
-                throw new DAOException( "Échec de la création de la commande en base, aucun ID auto-généré retourné." );
+                throw new DAOException( "ï¿½chec de la crï¿½ation de la commande en base, aucun ID auto-gï¿½nï¿½rï¿½ retournï¿½." );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -65,7 +65,7 @@ public class CommandeDaoImpl implements CommandeDao {
         }
     }
 
-    /* Implémentation de la méthode définie dans l'interface ClientDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface InscriptionDao */
     @Override
     public List<Commande> lister() throws DAOException {
         Connection connection = null;
@@ -89,7 +89,7 @@ public class CommandeDaoImpl implements CommandeDao {
         return commandes;
     }
 
-    /* Implémentation de la méthode définie dans l'interface CommandeDao */
+    /* Implï¿½mentation de la mï¿½thode dï¿½finie dans l'interface CommandeDao */
     @Override
     public void supprimer( Commande commande ) throws DAOException {
         Connection connexion = null;
@@ -100,7 +100,7 @@ public class CommandeDaoImpl implements CommandeDao {
             preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE_PAR_ID, true, commande.getId() );
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
-                throw new DAOException( "Échec de la suppression de la commande, aucune ligne supprimée de la table." );
+                throw new DAOException( "ï¿½chec de la suppression de la commande, aucune ligne supprimï¿½e de la table." );
             } else {
                 commande.setId( null );
             }
@@ -112,9 +112,9 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
     /*
-     * Méthode générique utilisée pour retourner une commande depuis la base de
-     * données, correspondant à la requête SQL donnée prenant en paramètres les
-     * objets passés en argument.
+     * Mï¿½thode gï¿½nï¿½rique utilisï¿½e pour retourner une commande depuis la base de
+     * donnï¿½es, correspondant ï¿½ la requï¿½te SQL donnï¿½e prenant en paramï¿½tres les
+     * objets passï¿½s en argument.
      */
     private Commande trouver( String sql, Object... objets ) throws DAOException {
         Connection connexion = null;
@@ -123,15 +123,15 @@ public class CommandeDaoImpl implements CommandeDao {
         Commande commande = null;
 
         try {
-            /* Récupération d'une connexion depuis la Factory */
+            /* Rï¿½cupï¿½ration d'une connexion depuis la Factory */
             connexion = daoFactory.getConnection();
             /*
-             * Préparation de la requête avec les objets passés en arguments
-             * (ici, uniquement un id) et exécution.
+             * Prï¿½paration de la requï¿½te avec les objets passï¿½s en arguments
+             * (ici, uniquement un id) et exï¿½cution.
              */
             preparedStatement = initialisationRequetePreparee( connexion, sql, false, objets );
             resultSet = preparedStatement.executeQuery();
-            /* Parcours de la ligne de données retournée dans le ResultSet */
+            /* Parcours de la ligne de donnï¿½es retournï¿½e dans le ResultSet */
             if ( resultSet.next() ) {
                 commande = map( resultSet );
             }
@@ -145,7 +145,7 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
     /*
-     * Simple méthode utilitaire permettant de faire la correspondance (le
+     * Simple mï¿½thode utilitaire permettant de faire la correspondance (le
      * mapping) entre une ligne issue de la table des commandes (un ResultSet)
      * et un bean Commande.
      */
@@ -154,11 +154,11 @@ public class CommandeDaoImpl implements CommandeDao {
         commande.setId( resultSet.getLong( "id" ) );
 
         /*
-         * Petit changement ici : pour récupérer un client, il nous faut faire
-         * appel à la méthode trouver() du DAO Client, afin de récupérer un bean
-         * Client à partir de l'id présent dans la table Commande.
+         * Petit changement ici : pour rï¿½cupï¿½rer un client, il nous faut faire
+         * appel ï¿½ la mï¿½thode trouver() du DAO Client, afin de rï¿½cupï¿½rer un bean
+         * Client ï¿½ partir de l'id prï¿½sent dans la table Commande.
          */
-        ClientDao clientDao = daoFactory.getClientDao();
+        InscriptionDao clientDao = daoFactory.getClientDao();
         commande.setClient( clientDao.trouver( resultSet.getLong( "id_client" ) ) );
 
         commande.setDate( new DateTime( resultSet.getTimestamp( "date" ) ) );

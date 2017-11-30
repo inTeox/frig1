@@ -1,4 +1,4 @@
-package com.sdzee.tp.filters;
+package filters;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,25 +14,22 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.sdzee.tp.beans.Client;
-import com.sdzee.tp.beans.Commande;
-import com.sdzee.tp.dao.ClientDao;
-import com.sdzee.tp.dao.CommandeDao;
-import com.sdzee.tp.dao.DAOFactory;
+import fg1.bean.Proprietaire;
+import dao.InscriptionDao;
+import dao.DAOFactory;
 
 public class PrechargementFilter implements Filter {
     public static final String CONF_DAO_FACTORY      = "daofactory";
-    public static final String ATT_SESSION_CLIENTS   = "clients";
-    public static final String ATT_SESSION_COMMANDES = "commandes";
+    public static final String ATT_SESSION_PROPRIETAIRES   = "proprietaires";
+    
 
-    private ClientDao          clientDao;
-    private CommandeDao        commandeDao;
+    private InscriptionDao          inscriptionDao;
+    
 
     public void init( FilterConfig config ) throws ServletException {
-        /* Récupération d'une instance de nos DAO Client et Commande */
-        this.clientDao = ( (DAOFactory) config.getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getClientDao();
-        this.commandeDao = ( (DAOFactory) config.getServletContext().getAttribute( CONF_DAO_FACTORY ) )
-                .getCommandeDao();
+        /* Rï¿½cupï¿½ration d'une instance de nos DAO Client et Commande */
+        this.inscriptionDao = ( (DAOFactory) config.getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getInscriptionDao();
+               
     }
 
     public void doFilter( ServletRequest req, ServletResponse res, FilterChain chain ) throws IOException,
@@ -40,44 +37,28 @@ public class PrechargementFilter implements Filter {
         /* Cast de l'objet request */
         HttpServletRequest request = (HttpServletRequest) req;
 
-        /* Récupération de la session depuis la requête */
+        /* Rï¿½cupï¿½ration de la session depuis la requï¿½te */
         HttpSession session = request.getSession();
 
         /*
          * Si la map des clients n'existe pas en session, alors l'utilisateur se
-         * connecte pour la première fois et nous devons précharger en session
+         * connecte pour la premiï¿½re fois et nous devons prï¿½charger en session
          * les infos contenues dans la BDD.
          */
-        if ( session.getAttribute( ATT_SESSION_CLIENTS ) == null ) {
+        if ( session.getAttribute( ATT_SESSION_PROPRIETAIRES ) == null ) {
             /*
-             * Récupération de la liste des clients existants, et enregistrement
+             * Rï¿½cupï¿½ration de la liste des clients existants, et enregistrement
              * en session
              */
-            List<Client> listeClients = clientDao.lister();
-            Map<Long, Client> mapClients = new HashMap<Long, Client>();
-            for ( Client client : listeClients ) {
-                mapClients.put( client.getId(), client );
+            List<Proprietaire> listeProprietaires = inscriptionDao.lister();
+            Map<Long, Proprietaire> mapProprietaires = new HashMap<Long, Proprietaire>();
+            for ( Proprietaire proprietaire : listeProprietaires ) {
+                mapProprietaires.put( proprietaire.getId(), proprietaire );
             }
-            session.setAttribute( ATT_SESSION_CLIENTS, mapClients );
+            session.setAttribute( ATT_SESSION_PROPRIETAIRES, mapProprietaires );
         }
 
-        /*
-         * De même pour la map des commandes
-         */
-        if ( session.getAttribute( ATT_SESSION_COMMANDES ) == null ) {
-            /*
-             * Récupération de la liste des commandes existantes, et
-             * enregistrement en session
-             */
-            List<Commande> listeCommandes = commandeDao.lister();
-            Map<Long, Commande> mapCommandes = new HashMap<Long, Commande>();
-            for ( Commande commande : listeCommandes ) {
-                mapCommandes.put( commande.getId(), commande );
-            }
-            session.setAttribute( ATT_SESSION_COMMANDES, mapCommandes );
-        }
-
-        /* Pour terminer, poursuite de la requête en cours */
+        /* Pour terminer, poursuite de la requï¿½te en cours */
         chain.doFilter( request, res );
     }
 

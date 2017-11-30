@@ -27,11 +27,18 @@
                     <label for="adresse2Proprietaire">Adresse<span class="requis">*</span></label>
                     <input type="text" id="adresse2Proprietaire" name="adresse2Proprietaire" value="" size="20" maxlength="20" />
                     <br />
-    
-                    <label for="telephoneClient">Numéro de téléphone <span class="requis">*</span></label>
-                    <input type="text" id="telephoneClient" name="telephoneClient" value="" size="20" maxlength="20" />
+                    <label for="cpProprietaire">Code postal<span class="requis">*</span></label>
+                    <input type="text" id="cpProprietaire" name="cpProprietaire" value="" size="5" maxlength="5" />
                     <br />
-                    
+                    <label for="villeProprietaire">Ville<span class="requis">*</span></label>
+                    <input type="text" id="villeProprietaire" name="villeProprietaire" value="" size="20" maxlength="20" />
+                    <br />
+                    <label for="pseudoProprietaire">Pseudo <span class="requis">*</span></label>
+                    <input type="text" id="pseudoProprietaire" name="pseudoProprietaire" value="" size="20" maxlength="20" />
+                    <br />
+                    <label for="motPasseProprietaire">Mot de passe <span class="requis">*</span></label>
+                    <input type="text" id="motPasseProprietaire" name="motPasseProprietaire" value="" size="20" maxlength="20" />
+                    <br />
                     <label for="emailClient">Adresse email</label>
                     <input type="email" id="emailClient" name="emailClient" value="" size="20" maxlength="60" />
                     <br />

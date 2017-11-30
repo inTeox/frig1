@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.beans.Client;
+import com.beans.Proprietaire;
 
 public class Inscription extends HttpServlet {
 
@@ -40,9 +40,9 @@ protected void doPost( HttpServletRequest request, HttpServletResponse response 
             message = "Client créé avec succès !";
         }
         /*
-         * Création du bean Client et initialisation avec les données récupérées
+         * Création du bean Proprietaire et initialisation avec les données récupérées
          */
-        Client client = new Client();
+        Proprietaire client = new Proprietaire();
         client.setNom( nom );
         client.setPrenom( prenom );
         client.setAdresse( adresse );
