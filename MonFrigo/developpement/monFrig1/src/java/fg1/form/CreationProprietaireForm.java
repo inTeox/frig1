@@ -1,5 +1,6 @@
-package com.sdzee.tp.forms;
+package fg1.form;
 
+import com.sun.mail.util.MimeUtil;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,11 +15,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import com.sdzee.tp.beans.Client;
+import fg1.bean.Proprietaire;
 
-import eu.medsea.mimeutil.MimeUtil;
+//import eu.medsea.mimeutil.MimeUtil;
 
-public final class CreationClientForm {
+public final class CreationProprietaireForm {
     private static final String CHAMP_NOM       = "nomClient";
     private static final String CHAMP_PRENOM    = "prenomClient";
     private static final String CHAMP_ADRESSE   = "adresseClient";
@@ -39,7 +40,7 @@ public final class CreationClientForm {
         return resultat;
     }
 
-    public Client creerClient( HttpServletRequest request, String chemin ) {
+    public Proprietaire creerProprietaire( HttpServletRequest request, String chemin ) {
         String nom = getValeurChamp( request, CHAMP_NOM );
         String prenom = getValeurChamp( request, CHAMP_PRENOM );
         String adresse = getValeurChamp( request, CHAMP_ADRESSE );
@@ -47,7 +48,7 @@ public final class CreationClientForm {
         String email = getValeurChamp( request, CHAMP_EMAIL );
         String image = null;
 
-        Client client = new Client();
+        Proprietaire client = new Proprietaire();
 
         try {
             validationNom( nom );
@@ -84,17 +85,10 @@ public final class CreationClientForm {
         }
         client.setEmail( email );
 
-        try {
-            image = validationImage( request, chemin );
-        } catch ( FormValidationException e ) {
-            setErreur( CHAMP_IMAGE, e.getMessage() );
-        }
-        client.setImage( image );
-
         if ( erreurs.isEmpty() ) {
-            resultat = "Succès de la création du client.";
+            resultat = "Succes de la creation du client.";
         } else {
-            resultat = "Échec de la création du client.";
+            resultat = "echec de la creation du client.";
         }
 
         return client;
@@ -103,7 +97,7 @@ public final class CreationClientForm {
     private void validationNom( String nom ) throws FormValidationException {
         if ( nom != null ) {
             if ( nom.length() < 2 ) {
-                throw new FormValidationException( "Le nom d'utilisateur doit contenir au moins 2 caractères." );
+                throw new FormValidationException( "Le nom d'utilisateur doit contenir au moins 2 caractï¿½res." );
             }
         } else {
             throw new FormValidationException( "Merci d'entrer un nom d'utilisateur." );
@@ -112,14 +106,14 @@ public final class CreationClientForm {
 
     private void validationPrenom( String prenom ) throws FormValidationException {
         if ( prenom != null && prenom.length() < 2 ) {
-            throw new FormValidationException( "Le prénom d'utilisateur doit contenir au moins 2 caractères." );
+            throw new FormValidationException( "Le prï¿½nom d'utilisateur doit contenir au moins 2 caractï¿½res." );
         }
     }
 
     private void validationAdresse( String adresse ) throws FormValidationException {
         if ( adresse != null ) {
             if ( adresse.length() < 10 ) {
-                throw new FormValidationException( "L'adresse de livraison doit contenir au moins 10 caractères." );
+                throw new FormValidationException( "L'adresse de livraison doit contenir au moins 10 caractï¿½res." );
             }
         } else {
             throw new FormValidationException( "Merci d'entrer une adresse de livraison." );
@@ -129,12 +123,12 @@ public final class CreationClientForm {
     private void validationTelephone( String telephone ) throws FormValidationException {
         if ( telephone != null ) {
             if ( !telephone.matches( "^\\d+$" ) ) {
-                throw new FormValidationException( "Le numéro de téléphone doit uniquement contenir des chiffres." );
+                throw new FormValidationException( "Le numï¿½ro de tï¿½lï¿½phone doit uniquement contenir des chiffres." );
             } else if ( telephone.length() < 4 ) {
-                throw new FormValidationException( "Le numéro de téléphone doit contenir au moins 4 chiffres." );
+                throw new FormValidationException( "Le numï¿½ro de tï¿½lï¿½phone doit contenir au moins 4 chiffres." );
             }
         } else {
-            throw new FormValidationException( "Merci d'entrer un numéro de téléphone." );
+            throw new FormValidationException( "Merci d'entrer un numï¿½ro de tï¿½lï¿½phone." );
         }
     }
 
@@ -146,8 +140,8 @@ public final class CreationClientForm {
 
     private String validationImage( HttpServletRequest request, String chemin ) throws FormValidationException {
         /*
-         * Récupération du contenu du champ image du formulaire. Il faut ici
-         * utiliser la méthode getPart().
+         * Rï¿½cupï¿½ration du contenu du champ image du formulaire. Il faut ici
+         * utiliser la mï¿½thode getPart().
          */
         String nomFichier = null;
         InputStream contenuFichier = null;
@@ -156,78 +150,78 @@ public final class CreationClientForm {
             nomFichier = getNomFichier( part );
 
             /*
-             * Si la méthode getNomFichier() a renvoyé quelque chose, il s'agit
+             * Si la mï¿½thode getNomFichier() a renvoyï¿½ quelque chose, il s'agit
              * donc d'un champ de type fichier (input type="file").
              */
             if ( nomFichier != null && !nomFichier.isEmpty() ) {
                 /*
                  * Antibug pour Internet Explorer, qui transmet pour une raison
-                 * mystique le chemin du fichier local à la machine du client...
+                 * mystique le chemin du fichier local ï¿½ la machine du client...
                  * 
                  * Ex : C:/dossier/sous-dossier/fichier.ext
                  * 
-                 * On doit donc faire en sorte de ne sélectionner que le nom et
-                 * l'extension du fichier, et de se débarrasser du superflu.
+                 * On doit donc faire en sorte de ne sï¿½lectionner que le nom et
+                 * l'extension du fichier, et de se dï¿½barrasser du superflu.
                  */
                 nomFichier = nomFichier.substring( nomFichier.lastIndexOf( '/' ) + 1 )
                         .substring( nomFichier.lastIndexOf( '\\' ) + 1 );
 
-                /* Récupération du contenu du fichier */
+                /* Rï¿½cupï¿½ration du contenu du fichier */
                 contenuFichier = part.getInputStream();
 
                 /* Extraction du type MIME du fichier depuis l'InputStream */
-                MimeUtil.registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
+                MimeUtil.   registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
                 Collection<?> mimeTypes = MimeUtil.getMimeTypes( contenuFichier );
-
+   
                 /*
-                 * Si le fichier est bien une image, alors son en-tête MIME
-                 * commence par la chaîne "image"
+                 * Si le fichier est bien une image, alors son en-tï¿½te MIME
+                 * commence par la chaï¿½ne "image"
                  */
                 if ( mimeTypes.toString().startsWith( "image" ) ) {
                     /* Ecriture du fichier sur le disque */
                     ecrireFichier( contenuFichier, nomFichier, chemin );
                 } else {
-                    throw new FormValidationException( "Le fichier envoyé doit être une image." );
+                    throw new FormValidationException( "Le fichier envoyï¿½ doit ï¿½tre une image." );
                 }
             }
         } catch ( IllegalStateException e ) {
             /*
-             * Exception retournée si la taille des données dépasse les limites
-             * définies dans la section <multipart-config> de la déclaration de
+             * Exception retournï¿½e si la taille des donnï¿½es dï¿½passe les limites
+             * dï¿½finies dans la section <multipart-config> de la dï¿½claration de
              * notre servlet d'upload dans le fichier web.xml
              */
             e.printStackTrace();
-            throw new FormValidationException( "Le fichier envoyé ne doit pas dépasser 1Mo." );
+            throw new FormValidationException( "Le fichier envoyï¿½ ne doit pas dï¿½passer 1Mo." );
         } catch ( IOException e ) {
             /*
-             * Exception retournée si une erreur au niveau des répertoires de
-             * stockage survient (répertoire inexistant, droits d'accès
+             * Exception retournï¿½e si une erreur au niveau des rï¿½pertoires de
+             * stockage survient (rï¿½pertoire inexistant, droits d'accï¿½s
              * insuffisants, etc.)
              */
             e.printStackTrace();
             throw new FormValidationException( "Erreur de configuration du serveur." );
         } catch ( ServletException e ) {
             /*
-             * Exception retournée si la requête n'est pas de type
+             * Exception retournï¿½e si la requï¿½te n'est pas de type
              * multipart/form-data.
              */
             e.printStackTrace();
             throw new FormValidationException(
-                    "Ce type de requête n'est pas supporté, merci d'utiliser le formulaire prévu pour envoyer votre fichier." );
+                    "Ce type de requï¿½te n'est pas supportï¿½, merci d'utiliser le formulaire prï¿½vu pour envoyer votre fichier." );
         }
 
         return nomFichier;
     }
 
     /*
-     * Ajoute un message correspondant au champ spécifié à la map des erreurs.
+     * Ajoute un message correspondant au champ spï¿½cifiï¿½ ï¿½ la map des erreurs.
      */
     private void setErreur( String champ, String message ) {
         erreurs.put( champ, message );
     }
 
     /*
-     * Méthode utilitaire qui retourne null si un champ est vide, et son contenu
+     * Mï¿½thode utilitaire qui retourne null si un champ est vide, et son contenu
      * sinon.
      */
     private static String getValeurChamp( HttpServletRequest request, String nomChamp ) {
@@ -240,35 +234,35 @@ public final class CreationClientForm {
     }
 
     /*
-     * Méthode utilitaire qui a pour unique but d'analyser l'en-tête
-     * "content-disposition", et de vérifier si le paramètre "filename" y est
-     * présent. Si oui, alors le champ traité est de type File et la méthode
+     * Mï¿½thode utilitaire qui a pour unique but d'analyser l'en-tï¿½te
+     * "content-disposition", et de vï¿½rifier si le paramï¿½tre "filename" y est
+     * prï¿½sent. Si oui, alors le champ traitï¿½ est de type File et la mï¿½thode
      * retourne son nom, sinon il s'agit d'un champ de formulaire classique et
-     * la méthode retourne null.
+     * la mï¿½thode retourne null.
      */
     private static String getNomFichier( Part part ) {
-        /* Boucle sur chacun des paramètres de l'en-tête "content-disposition". */
+        /* Boucle sur chacun des paramï¿½tres de l'en-tï¿½te "content-disposition". */
         for ( String contentDisposition : part.getHeader( "content-disposition" ).split( ";" ) ) {
-            /* Recherche de l'éventuelle présence du paramètre "filename". */
+            /* Recherche de l'ï¿½ventuelle prï¿½sence du paramï¿½tre "filename". */
             if ( contentDisposition.trim().startsWith( "filename" ) ) {
                 /*
-                 * Si "filename" est présent, alors renvoi de sa valeur,
-                 * c'est-à-dire du nom de fichier sans guillemets.
+                 * Si "filename" est prï¿½sent, alors renvoi de sa valeur,
+                 * c'est-ï¿½-dire du nom de fichier sans guillemets.
                  */
                 return contentDisposition.substring( contentDisposition.indexOf( '=' ) + 1 ).trim().replace( "\"", "" );
             }
         }
-        /* Et pour terminer, si rien n'a été trouvé... */
+        /* Et pour terminer, si rien n'a ï¿½tï¿½ trouvï¿½... */
         return null;
     }
 
     /*
-     * Méthode utilitaire qui a pour but d'écrire le fichier passé en paramètre
-     * sur le disque, dans le répertoire donné et avec le nom donné.
+     * Mï¿½thode utilitaire qui a pour but d'ï¿½crire le fichier passï¿½ en paramï¿½tre
+     * sur le disque, dans le rï¿½pertoire donnï¿½ et avec le nom donnï¿½.
      */
     private void ecrireFichier( InputStream contenuFichier, String nomFichier, String chemin )
             throws FormValidationException {
-        /* Prépare les flux. */
+        /* Prï¿½pare les flux. */
         BufferedInputStream entree = null;
         BufferedOutputStream sortie = null;
         try {
@@ -278,7 +272,7 @@ public final class CreationClientForm {
                     TAILLE_TAMPON );
 
             /*
-             * Lit le fichier reçu et écrit son contenu dans un fichier sur le
+             * Lit le fichier reï¿½u et ï¿½crit son contenu dans un fichier sur le
              * disque.
              */
             byte[] tampon = new byte[TAILLE_TAMPON];
@@ -287,7 +281,7 @@ public final class CreationClientForm {
                 sortie.write( tampon, 0, longueur );
             }
         } catch ( Exception e ) {
-            throw new FormValidationException( "Erreur lors de l'écriture du fichier sur le disque." );
+            throw new FormValidationException( "Erreur lors de l'ï¿½criture du fichier sur le disque." );
         } finally {
             try {
                 sortie.close();

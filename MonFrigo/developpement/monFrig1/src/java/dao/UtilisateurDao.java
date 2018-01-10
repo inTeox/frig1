@@ -1,3 +1,4 @@
+/*
 package com.sdzee.tp.dao;
 
 import com.sdzee.tp.beans.Utilisateur;
@@ -9,3 +10,4 @@ public interface UtilisateurDao {
     Utilisateur trouver( String email ) throws DAOException;
 
 }
+*/

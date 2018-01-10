@@ -1,8 +1,9 @@
-package com.sdzee.tp.dao;
+/*
+package dao;
 
 import java.util.List;
 
-import com.sdzee.tp.beans.Commande;
+import fg1.beans.Commande;
 
 public interface CommandeDao {
     void creer( Commande commande ) throws DAOException;
@@ -13,3 +14,4 @@ public interface CommandeDao {
 
     void supprimer( Commande commande ) throws DAOException;
 }
+*/

@@ -43,7 +43,7 @@ public class InscriptionDaoImpl implements InscriptionDao {
             preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true,
                     proprietaire.getNom(), proprietaire.getPrenom(),
                     proprietaire.getAdresse(), proprietaire.getTelephone(),
-                    proprietaire.getEmail(), proprietaire.getImage() );
+                    proprietaire.getEmail()  );
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
                 throw new DAOException( "�chec de la cr�ation du client, aucune ligne ajout�e dans la table." );
@@ -158,7 +158,6 @@ public class InscriptionDaoImpl implements InscriptionDao {
         proprietaire.setAdresse( resultSet.getString( "adresse" ) );
         proprietaire.setTelephone( resultSet.getString( "telephone" ) );
         proprietaire.setEmail( resultSet.getString( "email" ) );
-        proprietaire.setImage( resultSet.getString( "image" ) );
         return proprietaire;
     }
 

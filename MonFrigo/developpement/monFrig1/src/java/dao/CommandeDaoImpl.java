@@ -1,5 +1,7 @@
-package com.sdzee.tp.dao;
 
+
+package dao;
+/*
 import static com.sdzee.tp.dao.DAOUtilitaire.fermeturesSilencieuses;
 import static com.sdzee.tp.dao.DAOUtilitaire.initialisationRequetePreparee;
 
@@ -29,13 +31,15 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
     /* Impl�mentation de la m�thode d�finie dans l'interface CommandeDao */
-    @Override
+/*   
+@Override
     public Commande trouver( long id ) throws DAOException {
         return trouver( SQL_SELECT_PAR_ID, id );
     }
 
     /* Impl�mentation de la m�thode d�finie dans l'interface CommandeDao */
-    @Override
+/*   
+@Override
     public void creer( Commande commande ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
@@ -66,7 +70,8 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
     /* Impl�mentation de la m�thode d�finie dans l'interface InscriptionDao */
-    @Override
+/*    
+@Override
     public List<Commande> lister() throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -90,7 +95,8 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
     /* Impl�mentation de la m�thode d�finie dans l'interface CommandeDao */
-    @Override
+/*   
+@Override
     public void supprimer( Commande commande ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
@@ -116,6 +122,7 @@ public class CommandeDaoImpl implements CommandeDao {
      * donn�es, correspondant � la requ�te SQL donn�e prenant en param�tres les
      * objets pass�s en argument.
      */
+/*
     private Commande trouver( String sql, Object... objets ) throws DAOException {
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
@@ -124,21 +131,22 @@ public class CommandeDaoImpl implements CommandeDao {
 
         try {
             /* R�cup�ration d'une connexion depuis la Factory */
-            connexion = daoFactory.getConnection();
+    //        connexion = daoFactory.getConnection();
             /*
              * Pr�paration de la requ�te avec les objets pass�s en arguments
              * (ici, uniquement un id) et ex�cution.
              */
-            preparedStatement = initialisationRequetePreparee( connexion, sql, false, objets );
-            resultSet = preparedStatement.executeQuery();
+//            preparedStatement = initialisationRequetePreparee( connexion, sql, false, objets );
+  //          resultSet = preparedStatement.executeQuery();
             /* Parcours de la ligne de donn�es retourn�e dans le ResultSet */
+/*
             if ( resultSet.next() ) {
                 commande = map( resultSet );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
         } finally {
-            fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+:            fermeturesSilencieuses( resultSet, preparedStatement, connexion );
         }
 
         return commande;
@@ -149,6 +157,7 @@ public class CommandeDaoImpl implements CommandeDao {
      * mapping) entre une ligne issue de la table des commandes (un ResultSet)
      * et un bean Commande.
      */
+/*
     private Commande map( ResultSet resultSet ) throws SQLException {
         Commande commande = new Commande();
         commande.setId( resultSet.getLong( "id" ) );
@@ -158,6 +167,7 @@ public class CommandeDaoImpl implements CommandeDao {
          * appel � la m�thode trouver() du DAO Client, afin de r�cup�rer un bean
          * Client � partir de l'id pr�sent dans la table Commande.
          */
+/*
         InscriptionDao clientDao = daoFactory.getClientDao();
         commande.setClient( clientDao.trouver( resultSet.getLong( "id_client" ) ) );
 
@@ -171,3 +181,4 @@ public class CommandeDaoImpl implements CommandeDao {
     }
 
 }
+*/

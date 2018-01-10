@@ -1,4 +1,4 @@
-package com.sdzee.tp.dao;
+package dao;
 
 public class DAOConfigurationException extends RuntimeException {
     /*
