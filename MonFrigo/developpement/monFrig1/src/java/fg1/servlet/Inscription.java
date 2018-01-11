@@ -1,32 +1,38 @@
-package com.servlets;
+package fg1.servlet;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.beans.Proprietaire;
+import fg1.bean.Proprietaire;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet(name = "Acceuil", urlPatterns = {"/Inscript"})
 public class Inscription extends HttpServlet {
 
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		this.getServletContext().getRequestDispatcher("/WEB-INF/creerClient.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/creerProprietaire.jsp").forward(request, response);
 	}
 protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /*
          * Récupération des données saisies, envoyées en tant que paramètres de
          * la requête GET générée à la validation du formulaire
          */
-        String nom = request.getParameter( "nomClient" );
-        String prenom = request.getParameter( "prenomClient" );
-        String adresse = request.getParameter( "adresseClient" );
-        String telephone = request.getParameter( "telephoneClient" );
-        String email = request.getParameter( "emailClient" );
+        String nom = request.getParameter( "nomProprietaire" );
+        String prenom = request.getParameter( "prenomProprietaire" );
+        String adresse = request.getParameter( "adresse1Proprietaire" );
+        String adresse2 = request.getParameter( "adresse2Proprietaire" );
+        String cp = request.getParameter( "cpProprietaire" );
+        String ville = request.getParameter( "villeProprietaire" );
+        String pseudo = request.getParameter( "pseudoProprietaire" );
+        String mdp = request.getParameter( "motPasseProprietaire" );
+        String telephone = request.getParameter( "telephoneProprietaire" );
+        String email = request.getParameter( "emailProprietaire" );
 
         String message;
         /*
@@ -42,15 +48,22 @@ protected void doPost( HttpServletRequest request, HttpServletResponse response 
         /*
          * Création du bean Proprietaire et initialisation avec les données récupérées
          */
-        Proprietaire client = new Proprietaire();
-        client.setNom( nom );
-        client.setPrenom( prenom );
-        client.setAdresse( adresse );
-        client.setTelephone( telephone );
-        client.setEmail( email );
+        Proprietaire proprietaire = new Proprietaire();
+        proprietaire.setNom( nom );
+        proprietaire.setPrenom( prenom );
+        proprietaire.setAdresse( adresse );
+        proprietaire.setAdresse2( adresse2 );
+        proprietaire.setCp( cp );
+        proprietaire.setVille( ville );
+        proprietaire.setPseudo( pseudo );
+        proprietaire.setMdp( mdp );
+        proprietaire.setTelephone( telephone );
+        proprietaire.setEmail( email );
 
+ 
+        
         /* Ajout du bean et du message à l'objet requête */
-        request.setAttribute( "client", client );
+        request.setAttribute( "proprietaire", proprietaire );
         request.setAttribute( "message", message );
 
         /* Transmission à la page JSP en charge de l'affichage des données */

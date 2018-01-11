@@ -1,6 +1,6 @@
 package fg1.form;
 
-import com.sun.mail.util.MimeUtil;
+import eu.medsea.mimeutil.MimeUtil;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -170,7 +170,7 @@ public final class CreationProprietaireForm {
                 contenuFichier = part.getInputStream();
 
                 /* Extraction du type MIME du fichier depuis l'InputStream */
-                MimeUtil.   registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
+                MimeUtil.registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
                 Collection<?> mimeTypes = MimeUtil.getMimeTypes( contenuFichier );
    
                 /*

@@ -1,2 +1,8 @@
 1) probleme :  HTTP GET n'est pas supporté avec cette url
    --> j'ai ajouté éla methode doGet et doPost dans la servlet : acceuil.java
+========================================================================
+page de connection
+http://localhost:8080/monFrig1/Acceuil
+
+
+http://localhost:8080/monFrig1/Inscript;jsessionid=53a9739abb4d466ca6fe8e07ab1b

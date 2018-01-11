@@ -1,4 +1,4 @@
-package com.sdzee.tp.forms;
+package fg1.form;
 
 public class FormValidationException extends Exception {
     /*

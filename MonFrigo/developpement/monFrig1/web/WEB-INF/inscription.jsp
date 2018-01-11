@@ -39,8 +39,12 @@
                     <label for="motPasseProprietaire">Mot de passe <span class="requis">*</span></label>
                     <input type="text" id="motPasseProprietaire" name="motPasseProprietaire" value="" size="20" maxlength="20" />
                     <br />
-                    <label for="emailClient">Adresse email</label>
-                    <input type="email" id="emailClient" name="emailClient" value="" size="20" maxlength="60" />
+                    <label for="emailProprietaire">Adresse email</label>
+                    <input type="email" id="emailProprietaire" name="emailProprietaire" value="" size="20" maxlength="60" />
+                    <br />
+                    <br />
+                    <label for="telephoneProprietaire">Adresse email</label>
+                    <input type="email" id="telephoneProprietaire" name="telephoneProprietaire" value="" size="10" maxlength="10" />
                     <br />
                 </fieldset>
                 <input type="submit" value="Valider"  />
