@@ -1,0 +1,76 @@
+package dao;
+ 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import fr.ocr.sql.DAO;
+import voiture.Vehicule;
+
+ //CTRL + SHIFT + O pour générer les imports
+public class VoitureDAO extends DAO<Vehicule>{
+
+	  public VoitureDAO(Connection conn) {
+		super(conn);
+		// TODO Auto-generated constructor stub
+	}
+
+	  public boolean create(Vehicule obj) {
+		//  INSERT INTO client (prenom, nom, ville, age)
+		//  VALUES
+		//  ('Rébecca', 'Armand', 'Saint-Didier-des-Bois', 24)
+		   
+		  try {
+		      ResultSet result = this.connect.createStatement(
+		        ResultSet.TYPE_SCROLL_INSENSITIVE,
+		        ResultSet.CONCUR_READ_ONLY).executeQuery("INSERT into Vehicule (MARQUE, MOTEUR, PRIX, NOM) VALUES ("
+		        		+ obj.getMarque().getId() + " , "+ obj.getMoteur().getId() + " , " + obj.getPrix() + " , " + obj.getNom() + " ) ");
+		      while ( result.next() ) {   
+		          obj.setId(result.getInt(1));
+		          
+		      }        
+		    } catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+	    return false;
+	  }
+
+	  public boolean delete(Vehicule obj) {
+	    return false;
+	  }
+	   
+	  public boolean update(Vehicule obj) {
+	    return false;
+	  }
+	   
+	  public Vehicule find(int id) {
+	    Vehicule vehicule = new Vehicule();      
+	      
+	    try {
+	      ResultSet result = this.connect.createStatement(
+	        ResultSet.TYPE_SCROLL_INSENSITIVE,
+	        ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Vehicule WHERE id = " + id);
+	      if(result.first()) {
+	        vehicule = new Vehicule(
+	          id, 
+	          result.getString("nom"),
+	          result.getDouble("prix")  );
+	        result.beforeFirst();
+	          MarqueDAO marqueDao = new MarqueDAO(this.connect); 
+	          while (result.next())
+	        	  vehicule.setMarque(marqueDao.find(result.getInt("id")));   
+	          result.beforeFirst();
+	          MoteurDAO moteurDao = new MoteurDAO(this.connect); 
+	          while (result.next())
+	        	  vehicule.setMoteur(moteurDao.find(result.getInt("id")));   
+	          
+	      }        
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+	    return vehicule;
+	  }
+	  
+	  
+	}
+
