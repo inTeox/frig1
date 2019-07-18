@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import fr.ocr.sql.DAO;
 import voiture.Vehicule;
@@ -21,25 +22,49 @@ public class VoitureDAO extends DAO<Vehicule>{
 		//  ('Rébecca', 'Armand', 'Saint-Didier-des-Bois', 24)
 		   
 		  try {
+			  String sql_insert = "INSERT into Vehicule (MARQUE, MOTEUR, PRIX, NOM) VALUES (" +
+					  obj.getMarque().getId() + " , "+ obj.getMoteur().getId() + " , " + obj.getPrix() + " , " + obj.getNom() + " ) "; 
+			  Statement stmt = this.connect.createStatement();
+			  
+			  int result = stmt.executeUpdate(sql_insert , Statement.RETURN_GENERATED_KEYS);
+			  ResultSet resultat = stmt.getGeneratedKeys();
+			  
+			  while ( resultat.next() ) {   
+		          obj.setId(resultat.getInt(1));
+		           
+		      }
+			  stmt.close();  
+		    } catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+		  
+	    return false;
+	  }
+
+	  public boolean delete(Vehicule obj) {
+		  try {
 		      ResultSet result = this.connect.createStatement(
 		        ResultSet.TYPE_SCROLL_INSENSITIVE,
-		        ResultSet.CONCUR_READ_ONLY).executeQuery("INSERT into Vehicule (MARQUE, MOTEUR, PRIX, NOM) VALUES ("
-		        		+ obj.getMarque().getId() + " , "+ obj.getMoteur().getId() + " , " + obj.getPrix() + " , " + obj.getNom() + " ) ");
-		      while ( result.next() ) {   
-		          obj.setId(result.getInt(1));
-		          
-		      }        
+		        ResultSet.CONCUR_READ_ONLY).executeQuery("DELETE FROM Vehicule WHERE id = "
+		        		+ obj.getId()) ; 
+		      
 		    } catch (SQLException e) {
 		      e.printStackTrace();
 		    }
 	    return false;
 	  }
-
-	  public boolean delete(Vehicule obj) {
-	    return false;
-	  }
 	   
 	  public boolean update(Vehicule obj) {
+		  String sql_update = ( "UPDATE Vehicule  set TYPECLIENT = ? " + " , "
+                  + "FAXCLIENT = ? " + " , "
+                  + " AUTRETELCLIENT = ? "  + " , "
+                  + " NOTECLIENT = ? " + " , "
+                  + " DCCLIENT = ? " + " , "
+                  + " DFCLIENT = ? " 
+                  + " WHERE  IDPERSONNE = ? " ) ; 
+		  
+		  
+		  
 	    return false;
 	  }
 	   
@@ -73,4 +98,5 @@ public class VoitureDAO extends DAO<Vehicule>{
 	  
 	  
 	}
+
 
